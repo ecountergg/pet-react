@@ -1,3 +1,4 @@
+import { TreeDataItem } from "@/components/molecules/tree";
 import {
   Book,
   LayoutDashboard,
@@ -6,38 +7,40 @@ import {
   Users,
 } from "lucide-react";
 
-import { NavItem } from "@/types/nav-item";
-
-export const NAV_ITEMS: NavItem[] = [
+export const NAV_ITEMS: TreeDataItem[] = [
   {
-    title: "Dashboard",
+    id: "1",
+    name: "Dashboard",
     icon: LayoutDashboard,
     href: "/admin",
     color: "text-sky-500",
   },
   {
-    title: "Users",
+    id: "2",
+    name: "Users",
     icon: Users,
     href: "/users",
     color: "text-green-500",
   },
   {
-    title: "Master Data",
+    id: "3",
+    name: "Master Data",
     icon: ListTodo,
     href: "/master-data",
     color: "text-orange-500",
-    isChidren: true,
     children: [
       {
-        title: "Author",
+        id: "3-1",
+        name: "Author",
         icon: PersonStanding,
         color: "text-red-500",
         href: "/admin/master-data/author",
       },
       {
-        title: "Book",
+        id: "3-2",
+        name: "Book",
         icon: Book,
-        color: "text-green-500",
+        color: "text-purple-500",
         href: "/admin/master-data/book",
       },
     ],
