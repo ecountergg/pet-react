@@ -16,6 +16,5 @@ export const loginPost = async (payload: ILoginPayload) => {
     payload
   );
 
-  console.log(res.data);
   return res.data;
 };

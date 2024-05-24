@@ -41,7 +41,6 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
 
   const { mutate, isLoading } = useLoginPost({
     onSuccess: (response) => {
-      console.log(response);
       localStorage.setItem("authToken", response.data.accessToken);
 
       navigate(
