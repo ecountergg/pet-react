@@ -1,5 +1,5 @@
 import { ACard } from "./components/atoms/card/index";
-import { LoginForm } from "./components/molecules/login-form/index";
+import { MLoginForm } from "./components/molecules/login-form/index";
 import { Blank } from "./components/templates/blank/index";
 
 export const App = () => {
@@ -14,7 +14,7 @@ export const App = () => {
             className="w-3/5 bg-cover"
             src="/images/bg-cover.jpg"
           />
-          <LoginForm className="w-full" />
+          <MLoginForm className="w-full" />
         </ACard>
       </div>
     </Blank>

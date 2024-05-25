@@ -32,7 +32,7 @@ const validationSchema = z.object({
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-export const LoginForm = ({ className }: ILoginFormProps) => {
+export const MLoginForm = ({ className }: ILoginFormProps) => {
   const { handleSubmit, control } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
