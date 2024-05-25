@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { sidebar } from "./sidebar";
-// ...
+import { breadcrumb } from "./breadcrumb";
 
 export const store = configureStore({
   reducer: {
-    sidebar: sidebar.reducer,
+    breadcrumb: breadcrumb.reducer,
   },
 });
 
