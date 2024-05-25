@@ -1,16 +1,23 @@
 import { RouteObject } from "react-router-dom";
 
-import AuthGuard from "@/guards/auth";
 import { AdminIndex } from "@/pages/admin/index";
+import { UsersIndex } from "@/pages/admin/users";
+import { DashboardIndex } from "@/pages/admin/dashboard";
 
 const ADMIN_ROUTES: RouteObject[] = [
   {
     path: "admin",
-    element: (
-      <AuthGuard>
-        <AdminIndex />
-      </AuthGuard>
-    ),
+    element: <AdminIndex />,
+    children: [
+      {
+        path: "dashboard",
+        element: <DashboardIndex />,
+      },
+      {
+        path: "users",
+        element: <UsersIndex />,
+      },
+    ],
   },
 ];
 

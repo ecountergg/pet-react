@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { cn } from "@/lib/clsx";
 import { type LucideIcon } from "lucide-react";
 
 import { AScrollArea } from "@/components/atoms/scroll-area/index";
@@ -9,11 +8,13 @@ import {
   AAccordionTrigger,
   AAccordionContent,
 } from "@/components/atoms/accordion";
+import { cn } from "@/lib/clsx";
+import { useNavigate } from "react-router-dom";
 
 interface TreeDataItem {
   id: string;
   name: string;
-  href: string;
+  href?: string;
   icon?: LucideIcon;
   color?: string;
   children?: TreeDataItem[];
@@ -46,6 +47,7 @@ const ATree = React.forwardRef<HTMLDivElement, TreeProps>(
       string | undefined
     >(initialSelelectedItemId);
     const refRoot = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const handleSelectChange = React.useCallback(
       (item: TreeDataItem | undefined) => {
@@ -53,6 +55,7 @@ const ATree = React.forwardRef<HTMLDivElement, TreeProps>(
         if (onSelectChange) {
           onSelectChange(item);
         }
+        if (item?.href) navigate(item.href);
       },
       [onSelectChange]
     );

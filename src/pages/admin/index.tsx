@@ -1,9 +1,10 @@
 import { Admin } from "@/components/templates/admin/index";
+import { Outlet } from "react-router-dom";
 
 export const AdminIndex = () => {
   return (
     <Admin>
-      <h1>Admin Index</h1>
+      <Outlet />
     </Admin>
   );
 };

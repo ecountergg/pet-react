@@ -45,7 +45,7 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
 
       navigate(
         {
-          pathname: "admin",
+          pathname: "admin/dashboard",
         },
         {
           replace: true,

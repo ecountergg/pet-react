@@ -12,7 +12,7 @@ const UnAuthGuard = ({ children }: React.PropsWithChildren) => {
     const token = Boolean(localStorage.getItem("authToken"));
 
     if (token) {
-      return navigate("/admin");
+      return navigate("/admin/dashboard");
     }
   };
 
