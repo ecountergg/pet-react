@@ -2,19 +2,19 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "./index";
 
-interface Breadcrumb {
+export interface IBreadcrumb {
   href: string;
   label: string;
 }
 
 // Define a type for the slice state
-interface BreadcrumbState {
-  breadcrumbs: Breadcrumb[];
+export interface IBreadcrumbState {
+  items: IBreadcrumb[];
 }
 
 // Define the initial state using that type
-const initialState: BreadcrumbState = {
-  breadcrumbs: [],
+const initialState: IBreadcrumbState = {
+  items: [],
 };
 
 export const breadcrumb = createSlice({
@@ -22,8 +22,8 @@ export const breadcrumb = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setBreadrumbs: (state, action: PayloadAction<Breadcrumb[]>) => {
-      state.breadcrumbs = action.payload;
+    setBreadrumbs: (state, action: PayloadAction<IBreadcrumb[]>) => {
+      state.items = action.payload;
     },
   },
 });
@@ -31,6 +31,6 @@ export const breadcrumb = createSlice({
 export const { setBreadrumbs } = breadcrumb.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectIsOpen = (state: RootState) => state.breadcrumb.breadcrumbs;
+export const selectBreadcrumbs = (state: RootState) => state.breadcrumb.items;
 
 export default breadcrumb.reducer;

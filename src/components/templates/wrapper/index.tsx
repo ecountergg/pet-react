@@ -1,13 +1,11 @@
 import { HttpStatusCode } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Provider } from "react-redux";
 
 import { useToast } from "@/components/atoms/toast/use-toast";
 import { $http } from "@/lib/http";
 import { ErrorResponse } from "@/types/response";
 import { Toaster } from "@/components/atoms/toast/toaster";
-import { store } from "@/stores/index";
 
 type Props = {
   children: string | JSX.Element | JSX.Element[];
@@ -73,9 +71,9 @@ export const Wrapper = ({ children }: Props) => {
   );
 
   return (
-    <Provider store={store}>
+    <>
       {children}
       <Toaster />
-    </Provider>
+    </>
   );
 };
