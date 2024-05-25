@@ -22,30 +22,30 @@ interface TreeDataItem {
 
 type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   data: TreeDataItem[] | TreeDataItem;
-  initialSelelectedItemId?: string;
+  initialSelectedItemId?: string;
   onSelectChange?: (item: TreeDataItem | undefined) => void;
   expandAll?: boolean;
   folderIcon?: LucideIcon;
   itemIcon?: LucideIcon;
 };
 
-const ATree = React.forwardRef<HTMLDivElement, TreeProps>(
+const MTree = React.forwardRef<HTMLDivElement, TreeProps>(
   (
     {
       data,
-      initialSelelectedItemId,
-      onSelectChange,
+      initialSelectedItemId,
       expandAll,
       folderIcon,
       itemIcon,
       className,
+      onSelectChange,
       ...props
     },
     ref
   ) => {
     const [selectedItemId, setSelectedItemId] = React.useState<
       string | undefined
-    >(initialSelelectedItemId);
+    >(initialSelectedItemId);
     const refRoot = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const ATree = React.forwardRef<HTMLDivElement, TreeProps>(
     );
 
     const expandedItemIds = React.useMemo(() => {
-      if (!initialSelelectedItemId) {
+      if (!initialSelectedItemId) {
         return [] as string[];
       }
 
@@ -87,9 +87,9 @@ const ATree = React.forwardRef<HTMLDivElement, TreeProps>(
         }
       }
 
-      walkTreeItems(data, initialSelelectedItemId);
+      walkTreeItems(data, initialSelectedItemId);
       return ids;
-    }, [data, initialSelelectedItemId]);
+    }, [data, initialSelectedItemId]);
 
     const { width, height } = useResizeObserver({ ref: refRoot });
 
@@ -156,7 +156,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                         )}
                         onClick={() => handleSelectChange(item)}
                       >
-                        <div className="flex gap-x-2 items-center font-medium">
+                        <div className="flex gap-x-2 items-center">
                           {item.icon && (
                             <item.icon
                               className={cn("h-5 w-5", item.color)}
@@ -235,7 +235,7 @@ const Leaf = React.forwardRef<
       )}
       {...props}
     >
-      <div className="flex gap-x-2 items-center font-medium">
+      <div className="flex gap-x-2 items-center">
         {item.icon && (
           <item.icon className={cn("h-5 w-5", item.color)} aria-hidden="true" />
         )}
@@ -248,4 +248,4 @@ const Leaf = React.forwardRef<
   );
 });
 
-export { ATree, type TreeDataItem };
+export { MTree, type TreeDataItem };
