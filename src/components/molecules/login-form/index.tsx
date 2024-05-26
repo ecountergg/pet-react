@@ -14,7 +14,7 @@ import {
 } from "@/components/atoms/card/index";
 import { AFormInput } from "@/components/atoms/input/index";
 import { ILoginPayload } from "@/services/auth/login.post";
-import { useLoginPost } from "@/hooks/auth/mutations/use-login-post.mutation";
+import { useLoginPost } from "@/hooks/auth/mutations/use-login-post";
 import { useToast } from "@/components/atoms/toast/use-toast";
 
 interface ILoginFormProps {
@@ -39,7 +39,7 @@ export const MLoginForm = ({ className }: ILoginFormProps) => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const { mutate, isLoading } = useLoginPost({
+  const { mutate, isPending } = useLoginPost({
     onSuccess: (response) => {
       localStorage.setItem("authToken", response.data.accessToken);
 
@@ -99,7 +99,7 @@ export const MLoginForm = ({ className }: ILoginFormProps) => {
         <AButton type="reset" variant="outline">
           Cancel
         </AButton>
-        <AButton disabled={isLoading} loading={isLoading}>
+        <AButton disabled={isPending} loading={isPending}>
           Sign In
         </AButton>
       </ACardFooter>
