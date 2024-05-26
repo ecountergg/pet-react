@@ -6,14 +6,14 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/clsx";
 import { buttonVariants } from "./class";
 
-export interface ButtonProps
+export interface IButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
 }
 
-const AButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const AButton = React.forwardRef<HTMLButtonElement, IButtonProps>(
   ({ className, loading, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
