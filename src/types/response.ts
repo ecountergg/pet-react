@@ -25,3 +25,10 @@ export type ErrorResponse = {
   error: string | null;
   statusCode: HttpStatusCode | null;
 };
+
+export type IBaseResponse = {
+  id: string;
+  created_at: string;
+  deleted_at: string;
+  updated_at: string;
+};

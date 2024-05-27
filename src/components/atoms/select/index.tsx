@@ -7,8 +7,10 @@ import {
   UseControllerProps,
   useController,
 } from "react-hook-form";
+import { VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/clsx";
+import { selectTriggerVariants } from "./class";
 
 const ASelect = SelectPrimitive.Root;
 
@@ -22,7 +24,7 @@ const AFormSelect = <
   defaultValue,
   ...props
 }: UseControllerProps<TFieldValues, TName> &
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>) => {
+  React.ComponentPropsWithoutRef<typeof ASelect>) => {
   const {
     field: { value, onChange: onChange },
     fieldState,
@@ -32,12 +34,12 @@ const AFormSelect = <
     defaultValue,
   });
   return (
-    <SelectPrimitive.Root {...props} value={value} onValueChange={onChange}>
+    <ASelect {...props} value={value} onValueChange={onChange}>
       {children}
       {fieldState.error && (
         <small className="text-red-700">{fieldState.error.message}</small>
       )}
-    </SelectPrimitive.Root>
+    </ASelect>
   );
 };
 
@@ -45,16 +47,18 @@ const ASelectGroup = SelectPrimitive.Group;
 
 const ASelectValue = SelectPrimitive.Value;
 
+export type SelectTriggerProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Trigger
+> &
+  VariantProps<typeof selectTriggerVariants>;
+
 const ASelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  SelectTriggerProps
+>(({ className, size, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(
-      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-      className
-    )}
+    className={cn(selectTriggerVariants({ size, className }))}
     {...props}
   >
     {children}

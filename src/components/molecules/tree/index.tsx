@@ -150,9 +150,9 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                     <AccordionPrimitive.Item value={item.id}>
                       <AAccordionTrigger
                         className={cn(
-                          "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:h-[1.75rem] before:-z-10",
+                          "px-2 text-accent-foreground font-normal hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:h-[1.75rem] before:-z-10",
                           selectedItemId === item.id &&
-                            "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
+                            "before:opacity-100 before:bg-accent font-medium text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
                         )}
                         onClick={() => handleSelectChange(item)}
                       >
@@ -185,7 +185,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                     </AccordionPrimitive.Item>
                   </AccordionPrimitive.Root>
                 ) : (
-                  <Leaf
+                  <ALeaf
                     item={item}
                     isSelected={selectedItemId === item.id}
                     onClick={() => handleSelectChange(item)}
@@ -196,7 +196,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
             ))
           ) : (
             <li>
-              <Leaf
+              <ALeaf
                 item={data}
                 isSelected={selectedItemId === data.id}
                 onClick={() => handleSelectChange(data)}
@@ -210,7 +210,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   }
 );
 
-const Leaf = React.forwardRef<
+const ALeaf = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     item: TreeDataItem;
@@ -229,6 +229,7 @@ const Leaf = React.forwardRef<
         className,
         isSelected &&
           `
+            font-medium
             before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2
             before:border-l-accent-foreground/50 dark:before:border-0
           `

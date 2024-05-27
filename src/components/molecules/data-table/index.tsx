@@ -139,7 +139,7 @@ export const MDataTable = <TData, TValue>({
     }
 
     setFilter({
-      page: pageIndex,
+      page: pageIndex + 1,
       limit: pageSize,
       order: order,
       orderBy: sortingAtom ? sortingAtom.id : undefined,
@@ -155,8 +155,8 @@ export const MDataTable = <TData, TValue>({
       sorting,
     },
     manualSorting: true,
-    onSortingChange: setSorting,
     manualPagination: true,
+    onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
   });

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 import { AButton } from "@/components/atoms/button/index";
-import { ALabel } from "@/components/atoms/label/index";
 import {
   ACardContent,
   ACardDescription,
@@ -12,10 +11,18 @@ import {
   ACardHeader,
   ACardTitle,
 } from "@/components/atoms/card/index";
-import { AFormInput } from "@/components/atoms/input/index";
+import { AInput } from "@/components/atoms/input/index";
 import { ILoginPayload } from "@/services/auth/login.post";
 import { useLoginPost } from "@/hooks/auth/mutations/use-login-post";
 import { useToast } from "@/components/atoms/toast/use-toast";
+import {
+  AForm,
+  AFormControl,
+  AFormField,
+  AFormItem,
+  AFormLabel,
+  AFormMessage,
+} from "@/components/atoms/form";
 
 interface ILoginFormProps {
   className: string;
@@ -33,7 +40,7 @@ const validationSchema = z.object({
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 export const MLoginForm = ({ className }: ILoginFormProps) => {
-  const { handleSubmit, control } = useForm<ValidationSchema>({
+  const form = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
   const navigate = useNavigate();
@@ -63,46 +70,51 @@ export const MLoginForm = ({ className }: ILoginFormProps) => {
   };
 
   return (
-    <form className={className} onSubmit={handleSubmit(onSubmit)}>
-      <ACardHeader>
-        <ACardTitle>Login</ACardTitle>
-        <ACardDescription>
-          Please enter your username and password to access your account.
-        </ACardDescription>
-      </ACardHeader>
-      <ACardContent>
-        <div className="grid w-full items-center gap-4">
-          <div className="flex flex-col space-y-1.5">
-            <ALabel htmlFor="username">Username</ALabel>
-            <AFormInput
-              id="username"
-              name="username"
-              placeholder="username"
-              control={control}
-              autoComplete="off"
-            />
-          </div>
-          <div className="flex flex-col space-y-1.5">
-            <ALabel htmlFor="password">Password</ALabel>
-            <AFormInput
-              id="password"
-              name="password"
-              type="password"
-              placeholder="*****"
-              control={control}
-              autoComplete="off"
-            />
-          </div>
-        </div>
-      </ACardContent>
-      <ACardFooter className="flex justify-between">
-        <AButton type="reset" variant="outline">
-          Cancel
-        </AButton>
-        <AButton disabled={isPending} loading={isPending}>
-          Sign In
-        </AButton>
-      </ACardFooter>
-    </form>
+    <AForm {...form}>
+      <form className={className} onSubmit={form.handleSubmit(onSubmit)}>
+        <ACardHeader>
+          <ACardTitle>Login</ACardTitle>
+          <ACardDescription>
+            Please enter your username and password to access your account.
+          </ACardDescription>
+        </ACardHeader>
+        <ACardContent className="flex flex-col space-y-2">
+          <AFormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <AFormItem>
+                <AFormLabel>Username</AFormLabel>
+                <AFormControl>
+                  <AInput placeholder="Username" {...field} />
+                </AFormControl>
+                <AFormMessage />
+              </AFormItem>
+            )}
+          />
+          <AFormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <AFormItem>
+                <AFormLabel>Password</AFormLabel>
+                <AFormControl>
+                  <AInput placeholder="******" type="password" {...field} />
+                </AFormControl>
+                <AFormMessage />
+              </AFormItem>
+            )}
+          />
+        </ACardContent>
+        <ACardFooter className="flex justify-between">
+          <AButton type="reset" variant="outline">
+            Cancel
+          </AButton>
+          <AButton type="submit" disabled={isPending} loading={isPending}>
+            Sign In
+          </AButton>
+        </ACardFooter>
+      </form>
+    </AForm>
   );
 };
