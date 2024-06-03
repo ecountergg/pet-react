@@ -10,9 +10,11 @@ import { USERS_KEY } from "./query-key";
 export const useProfileGet = (
   queryOpts?: UseQueryOptions<GenericResponse<IProfileResponse>>
 ) => {
-  return useQuery<GenericResponse<IProfileResponse>>(
-    USERS_KEY.profile(),
-    () => profileGet(),
-    queryOpts
-  );
+  return {
+    ...useQuery<GenericResponse<IProfileResponse>>({
+      queryKey: USERS_KEY.profile(),
+      queryFn: () => profileGet(),
+      ...queryOpts,
+    }),
+  };
 };
