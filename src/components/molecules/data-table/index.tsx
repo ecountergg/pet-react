@@ -40,6 +40,7 @@ import { LIMIT, LIMITS } from "@/consts/pagination";
 import { SORT_DIRECTION } from "@/consts/request";
 import { PaginationMetaResponse } from "@/types/response";
 import { EnumSortDirection, PaginationFilter } from "@/types/request";
+import { ASkeleton } from "@/components/atoms/skeleton/skeleton";
 
 interface IPaginationDataTableProps {
   pageCount: number;
@@ -103,6 +104,8 @@ interface IDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   meta: PaginationMetaResponse;
+  loading?: boolean;
+  loadingLength?: number;
   setFilter: React.Dispatch<React.SetStateAction<PaginationFilter>>;
 }
 
@@ -110,6 +113,8 @@ export const MDataTable = <TData, TValue>({
   columns,
   data,
   meta,
+  loading = false,
+  loadingLength = 5,
   setFilter,
 }: IDataTableProps<TData, TValue>) => {
   const memoizedData = useMemo(() => data, [data]);
@@ -197,7 +202,7 @@ export const MDataTable = <TData, TValue>({
             ))}
           </ATableHeader>
           <ATableBody>
-            {table.getRowModel().rows?.length ? (
+            {!loading && table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <ATableRow
                   key={row.id}
@@ -213,6 +218,27 @@ export const MDataTable = <TData, TValue>({
                   ))}
                 </ATableRow>
               ))
+            ) : loading ? (
+              Array(data.length < loadingLength ? loadingLength : data.length)
+                .fill(0)
+                .map((_, index) => {
+                  return (
+                    <ATableRow key={index}>
+                      {table.getHeaderGroups().map((headerGroup) => {
+                        return headerGroup.headers.map((_, index) => {
+                          return (
+                            <ATableCell key={index}>
+                              <ASkeleton
+                                key={index}
+                                className="w-full h-[15px]"
+                              />
+                            </ATableCell>
+                          );
+                        });
+                      })}
+                    </ATableRow>
+                  );
+                })
             ) : (
               <ATableRow>
                 <ATableCell
