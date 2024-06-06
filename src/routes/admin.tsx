@@ -1,8 +1,9 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 
 import { AdminIndex } from "@/pages/admin/index";
 import { UsersIndex } from "@/pages/admin/users";
 import { DashboardIndex } from "@/pages/admin/dashboard";
+import { AuthorsIndex } from "@/pages/admin/master-data/authors";
 
 const ADMIN_ROUTES: RouteObject[] = [
   {
@@ -16,6 +17,19 @@ const ADMIN_ROUTES: RouteObject[] = [
       {
         path: "users",
         element: <UsersIndex />,
+      },
+      {
+        path: "master-data",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/admin/master-data/authors" replace />,
+          },
+          {
+            path: "authors",
+            element: <AuthorsIndex />,
+          },
+        ],
       },
     ],
   },

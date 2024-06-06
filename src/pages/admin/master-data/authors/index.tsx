@@ -1,19 +1,18 @@
 import { useEffect } from "react";
 import { Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Container } from "@/components/templates/container";
 import { AButton } from "@/components/atoms/button";
 import { AInput } from "@/components/atoms/input";
 import { MDataTable } from "@/components/molecules/data-table";
-import { IUsersResponse } from "@/services/users/list.get";
+import { IAuthorsResponse } from "@/services/authors/list.get";
 import { formatDate } from "@/utils/date";
-import { useUserListGet } from "@/hooks/users/queries/use-user-list-get";
+import { useAuthorListGet } from "@/hooks/master-data/authors/use-author-list-get";
 import { PaginationMetaResponse } from "@/types/response";
 import { useDebounceCallback } from "@/hooks/use-debounce-callback";
 
-export const UsersIndex = () => {
-  const { filter, setFilter, data: users } = useUserListGet();
+export const AuthorsIndex = () => {
+  const { filter, setFilter, isPending, data: authors } = useAuthorListGet();
   const debounced = useDebounceCallback(setFilter, 500);
 
   useEffect(() => {
@@ -22,35 +21,35 @@ export const UsersIndex = () => {
     });
   }, [filter]);
 
-  const columns: ColumnDef<IUsersResponse>[] = [
+  const columns: ColumnDef<IAuthorsResponse>[] = [
     {
-      accessorKey: "username",
-      header: "Username",
+      accessorKey: "name",
+      header: "Name",
     },
     {
       accessorKey: "created_at",
       header: "Created At",
       cell: ({ row }) => {
-        const user = row.original;
-        return formatDate(user.created_at);
+        const author = row.original;
+        return formatDate(author.created_at);
       },
     },
     {
       accessorKey: "updated_at",
       header: "Updated At",
       cell: ({ row }) => {
-        const user = row.original;
-        return formatDate(user.updated_at);
+        const author = row.original;
+        return formatDate(author.updated_at);
       },
     },
   ];
   return (
     <Container>
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-2xl">User's List</h3>
+        <h3 className="font-semibold text-2xl">Author's List</h3>
         <AButton size="sm" className="gap-x-2">
           <Plus className="w-4 h-4" />
-          Add New User
+          Add New Author
         </AButton>
       </div>
       <div className="flex items-center justify-between gap-x-4 shadow rounded p-4 mt-4">
@@ -60,7 +59,7 @@ export const UsersIndex = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             debounced({
               ...filter,
-              username: e.target.value,
+              name: e.target.value,
             })
           }
         ></AInput>
@@ -70,9 +69,10 @@ export const UsersIndex = () => {
       </div>
       <MDataTable
         columns={columns}
-        data={users?.data.data ?? []}
-        meta={users?.data.meta as PaginationMetaResponse}
+        data={authors?.data.data ?? []}
+        meta={authors?.data.meta as PaginationMetaResponse}
         setFilter={setFilter}
+        loading={isPending}
       />
     </Container>
   );

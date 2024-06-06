@@ -1,50 +1,61 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Location, Path, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { MTree, TreeDataItem } from "@/components/molecules/tree/index";
 import { Wrapper } from "../wrapper/index";
 import MHeader from "@/components/molecules/header/index";
-import { NAV_ITEMS } from "@/consts/nav-item";
+import { NAV_ITEMS, NAV_NAME } from "@/consts/nav-item";
 import AuthGuard from "@/guards/auth";
 import { useAppSelector } from "@/stores";
+
 import { MBreadcrumb } from "@/components/molecules/breadcrumb/index";
+import { IBreadcrumb } from "@/stores/breadcrumb";
+import { setBreadrumbs } from "@/stores/breadcrumb";
 
 type Props = {
   children: string | JSX.Element;
 };
 
 export const Admin = ({ children }: Props) => {
+  const dispatch = useDispatch();
   const items = useAppSelector((state) => state.breadcrumb.items);
   const currentLocation = useLocation();
+  const itemBredcrumbs: IBreadcrumb[] = currentLocation.pathname
+    .split("/")
+    .slice(2)
+    .map((item, index, arr) => {
+      const parent = arr?.[index - 1];
+      return {
+        label: NAV_NAME?.[item as keyof typeof NAV_NAME] ?? "",
+        href: ["/admin", parent, item].filter((v) => !!v).join("/"),
+      };
+    });
 
-  const findMostSpecificNavItem = (
-    currentLocationPath: Location<Path>,
-    navItems: TreeDataItem[]
-  ): TreeDataItem | null => {
-    let matchedItem = null;
+  useEffect(() => {
+    dispatch(setBreadrumbs(itemBredcrumbs));
+  }, [currentLocation]);
 
-    for (const item of navItems) {
-      if (item.href && currentLocation.pathname.startsWith(item.href)) {
-        if (!item.children) {
-          matchedItem = item;
-          break;
-        }
-        const childMatch: TreeDataItem | null = findMostSpecificNavItem(
-          currentLocationPath,
-          item.children
-        );
-        if (childMatch) {
-          matchedItem = childMatch;
-          break;
+  const findIdByHref = (
+    items: TreeDataItem[],
+    location: Location<Path>
+  ): string => {
+    for (const item of items) {
+      if (item.href !== "" && location.pathname.startsWith(item.href ?? "")) {
+        return item.id;
+      }
+      if (item.children) {
+        const childResult = findIdByHref(item.children, location);
+        if (childResult) {
+          return childResult;
         }
       }
     }
-
-    return matchedItem;
+    return "";
   };
 
   const initialSelectedSidebar = useMemo(
-    () => findMostSpecificNavItem(currentLocation, NAV_ITEMS),
+    () => findIdByHref(NAV_ITEMS, currentLocation),
     [currentLocation]
   );
 
@@ -57,7 +68,7 @@ export const Admin = ({ children }: Props) => {
             <MTree
               data={NAV_ITEMS}
               className="flex-shrink-0 w-[200px] border"
-              initialSelectedItemId={initialSelectedSidebar?.id}
+              initialSelectedItemId={initialSelectedSidebar}
             />
             <main className="w-full overflow-auto bg-secondary/10">
               <MBreadcrumb items={items} />
