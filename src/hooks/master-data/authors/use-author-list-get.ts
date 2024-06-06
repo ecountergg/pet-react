@@ -27,7 +27,6 @@ export const useAuthorListGet = (
     ...useQuery<GenericResponse<PaginationResponse<IAuthorsResponse>>>({
       queryKey: AUTHORS_KEY.list(filter),
       queryFn: () => authorsGet(filter),
-      refetchOnReconnect: true,
       ...options,
     }),
   };
