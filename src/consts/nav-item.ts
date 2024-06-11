@@ -10,6 +10,7 @@ import {
 export const NAV_NAME = {
   authors: "Authors",
   dashboard: "Dashboard",
+  create: "Create",
   "master-data": "Master Data",
   users: "Users",
 };

@@ -1,3 +1,4 @@
+export const currYear = new Date().getFullYear();
 export const formatDate = (inputDate?: string) => {
   if (!inputDate) return "-";
 

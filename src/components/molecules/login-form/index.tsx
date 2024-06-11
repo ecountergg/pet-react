@@ -42,6 +42,10 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 export const MLoginForm = ({ className }: ILoginFormProps) => {
   const form = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
   const navigate = useNavigate();
   const toast = useToast();
@@ -99,7 +103,12 @@ export const MLoginForm = ({ className }: ILoginFormProps) => {
               <AFormItem>
                 <AFormLabel>Password</AFormLabel>
                 <AFormControl>
-                  <AInput placeholder="******" type="password" {...field} />
+                  <AInput
+                    placeholder="******"
+                    type="password"
+                    autoComplete="false"
+                    {...field}
+                  />
                 </AFormControl>
                 <AFormMessage />
               </AFormItem>

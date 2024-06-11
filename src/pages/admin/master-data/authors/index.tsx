@@ -7,11 +7,14 @@ import { AInput } from "@/components/atoms/input";
 import { MDataTable } from "@/components/molecules/data-table";
 import { IAuthorsResponse } from "@/services/authors/list.get";
 import { formatDate } from "@/utils/date";
-import { useAuthorListGet } from "@/hooks/master-data/authors/use-author-list-get";
+import { useAuthorListGet } from "@/hooks/master-data/authors/queries/use-author-list-get";
 import { PaginationMetaResponse } from "@/types/response";
 import { useDebounceCallback } from "@/hooks/use-debounce-callback";
+import { useNavigate } from "react-router-dom";
+import { ACard } from "@/components/atoms/card";
 
 export const AuthorsIndex = () => {
+  const navigate = useNavigate();
   const { filter, setFilter, isPending, data: authors } = useAuthorListGet();
   const debounced = useDebounceCallback(setFilter, 500);
 
@@ -47,12 +50,16 @@ export const AuthorsIndex = () => {
     <Container>
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-2xl">Author's List</h3>
-        <AButton size="sm" className="gap-x-2">
+        <AButton
+          size="sm"
+          className="gap-x-2"
+          onClick={() => navigate("create")}
+        >
           <Plus className="w-4 h-4" />
           Add New Author
         </AButton>
       </div>
-      <div className="flex items-center justify-between gap-x-4 shadow rounded p-4 mt-4">
+      <ACard className="flex items-center justify-between gap-x-4 p-4 mt-4">
         <AInput
           inputSize="sm"
           placeholder="Search name"
@@ -62,11 +69,11 @@ export const AuthorsIndex = () => {
               name: e.target.value,
             })
           }
-        ></AInput>
+        />
         <AButton size="sm" className="gap-x-2">
           Search
         </AButton>
-      </div>
+      </ACard>
       <MDataTable
         columns={columns}
         data={authors?.data.data ?? []}
