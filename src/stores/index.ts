@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { breadcrumb } from "./breadcrumb";
 import { useSelector } from "react-redux";
+import { alertDialog } from "./alert-dialog";
 
 export const store = configureStore({
   reducer: {
     breadcrumb: breadcrumb.reducer,
+    alertDialog: alertDialog.reducer,
   },
 });
 
